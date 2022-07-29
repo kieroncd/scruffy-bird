@@ -9,7 +9,9 @@ class Bird:
         self.y = y
         self.v = 0
         self.a = a  # gravity strength
-        self.rect = pygame.Rect((self.x, self.y), (25, 25))
+        self.sprite = pygame.image.load(r'graphics/scruff.png').convert()
+        self.rect = self.sprite.get_rect()
+        self.rect.center = (100, 150)
         self.debug = debug
         if self.debug:
             self.upper_dot = pygame.Rect((self.x, self.y), (25, 1))
@@ -18,14 +20,15 @@ class Bird:
     def update(self, delta):
         self.v += self.a * delta
         self.y += self.v
-        self.rect = pygame.Rect((self.x, self.y), (25, 25))
+        self.rect = self.sprite.get_rect()
+        self.rect.center = (100, self.y)
         if self.debug:
             self.upper_dot = pygame.Rect((self.x, self.y), (25, 1))
             self.lower_dot = pygame.Rect((self.x, self.y + 25), (25, 1))
         self.a = 0.01
 
     def render(self, screen):
-        pygame.draw.rect(screen, (0, 255, 0), self.rect)
+        screen.blit(self.sprite, self.rect)
         if self.debug:
             pygame.draw.rect(screen, (255, 0, 0), self.upper_dot)
             pygame.draw.rect(screen, (255, 0, 0), self.lower_dot)
