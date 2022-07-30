@@ -2,6 +2,8 @@ import pygame
 from scene.scene import Scene
 from bird import Bird
 from pipe import PipePair
+from ui.background import ScrollingBackground
+from ui.level import LevelUI
 
 
 def check_ready(events):
@@ -18,6 +20,9 @@ class LevelScene(Scene):
         self.player = Bird()
         self.pipe_one = PipePair(300)
         self.pipe_two = PipePair(500)
+        self.background = ScrollingBackground()
+        self.ui = LevelUI()
+
         self.score = 0
         self.ready = False
 
@@ -32,9 +37,10 @@ class LevelScene(Scene):
             return
         for e in self.entities():
             e.update(delta)
+        self.background.update(delta)
         self.check_collisions()
         self.reposition_obstacles()
-        pygame.display.set_caption(f'{self.score}')
+        self.ui.update()
 
     def process_input(self, events):
         if not self.ready:
@@ -47,8 +53,10 @@ class LevelScene(Scene):
             press = pygame.image.load(r'ui/ui-graphics/pressspace.png').convert()
             screen.blit(press, press.get_rect(topleft=(25, 200)))
             return
+        self.background.render(screen)
         for e in self.entities():
             e.render(screen)
+        self.ui.render(screen)
 
     def check_collisions(self):
         # if player falls off the bottom, reset
@@ -60,7 +68,7 @@ class LevelScene(Scene):
                 self.switch_scene(LevelScene())
                 return
             if pipe.x < self.player.x and pipe.award_points:
-                self.score += 1
+                self.ui.score_counter.add_score()
                 pipe.award_points = False
 
     def reposition_obstacles(self):

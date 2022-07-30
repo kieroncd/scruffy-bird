@@ -9,8 +9,8 @@ class Pipe:
         self.y = y
         self.rect = pygame.Rect((self.x, self.y), (50, 200))
 
-    def update(self, delta):
-        self.x -= 0.1 * delta
+    def update(self, delta, speed=0.1):
+        self.x -= speed * delta
         self.rect = pygame.Rect((self.x, self.y), (50, 200))
 
     def render(self, screen):
@@ -26,10 +26,10 @@ class PipePair:
         self.upper = Pipe(self.x, -100 + offset)
         self.lower = Pipe(self.x, 200 + offset)
 
-    def update(self, delta):
+    def update(self, delta, speed=0.1):
         self.check_oob()
-        self.upper.update(delta)
-        self.lower.update(delta)
+        self.upper.update(delta, speed)
+        self.lower.update(delta, speed)
         self.x = self.upper.x
 
     def render(self, screen):
