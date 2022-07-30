@@ -37,7 +37,8 @@ class PipePair:
         self.lower.render(screen)
 
     def check_oob(self):
-        if self.upper.x < -50:
+        # Checks if pipe is off-screen
+        if self.x < -50:
             return True
 
     def reposition(self, x):

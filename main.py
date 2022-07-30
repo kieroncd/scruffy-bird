@@ -1,18 +1,18 @@
 import pygame
 from scene.titlescene import TitleScene
 
-if __name__ == '__main__':
+
+def run_game():
     pygame.init()
     screen = pygame.display.set_mode((250, 300))
     clock = pygame.time.Clock()
     scene = TitleScene()
-    running = True
 
     while scene is not None:
         fil_events = []
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                scene.switch_scene(None)
+                scene.kill()
             else:
                 fil_events.append(event)
         delta = clock.tick(60)
@@ -23,3 +23,7 @@ if __name__ == '__main__':
         scene = scene.next
         pygame.display.flip()
     pygame.quit()
+
+
+if __name__ == '__main__':
+    run_game()

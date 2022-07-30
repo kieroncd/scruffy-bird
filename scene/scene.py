@@ -7,13 +7,13 @@ class Scene:
         self.next = self
 
     def process_input(self, events):
-        pass
+        raise NotImplementedError(f"process_input not implemented in {self.__class__.__name__}")
 
     def update(self, delta):
-        pass
+        raise NotImplementedError(f"update not implemented in {self.__class__.__name__}")
 
     def render(self, screen):
-        pass
+        raise NotImplementedError(f"render not implemented in {self.__class__.__name__}")
 
     def switch_scene(self, next_scene):
         self.next = next_scene

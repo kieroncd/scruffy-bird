@@ -7,18 +7,23 @@ from ui.button import Button
 class TitleScene(Scene):
     def __init__(self):
         self.logo = pygame.image.load(r'ui/ui-graphics/logo.png').convert()
-        self.button = Button("start", self.l, 50, 150, 150, 20)
+        self.start = Button("start", self.switch_to_level, 50, 150, 150, 20)
         self.next = self
+
+    def buttons(self):
+        return [self.start]
 
     def update(self, delta):
         pass
 
     def process_input(self, events):
-        self.button.process_input(events)
+        for button in self.buttons():
+            button.process_input(events)
 
     def render(self, screen):
         screen.blit(self.logo, self.logo.get_rect(topleft=(50, 20)))
-        self.button.render(screen)
+        for button in self.buttons():
+            button.render(screen)
 
-    def l(self):
+    def switch_to_level(self):
         self.next = LevelScene()

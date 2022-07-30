@@ -43,12 +43,18 @@ class LevelScene(Scene):
         self.player.process_input(events)
 
     def render(self, screen):
+        if not self.ready:
+            press = pygame.image.load(r'ui/ui-graphics/pressspace.png').convert()
+            screen.blit(press, press.get_rect(topleft=(25, 200)))
+            return
         for e in self.entities():
             e.render(screen)
 
     def check_collisions(self):
+        # if player falls off the bottom, reset
         if self.player.rect.y > 300:
             self.switch_scene(LevelScene())
+        # checks collision of player with pipes
         for pipe in self.pipes():
             if self.player.rect.colliderect(pipe.upper.rect) or self.player.rect.colliderect(pipe.lower.rect):
                 self.switch_scene(LevelScene())
@@ -59,7 +65,7 @@ class LevelScene(Scene):
 
     def reposition_obstacles(self):
         if self.pipe_one.check_oob():
-            self.pipe_one.reposition(self.pipe_two.upper.x + 200)
+            self.pipe_one.reposition(self.pipe_two.x + 200)
         if self.pipe_two.check_oob():
-            self.pipe_two.reposition(self.pipe_one.upper.x + 200)
+            self.pipe_two.reposition(self.pipe_one.x + 200)
 
