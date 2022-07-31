@@ -3,11 +3,14 @@ A flappy bird clone made in pygame, filled with inside jokes. It's a bit tricky 
 
 The game is very early in development and probably will never be finished.
 
+There are probably all sorts of bugs, so please use with caution.
+
 ### Current Features
 
 - some graphics
 - flappy bird pipe jumping action; except my scruff mate Joe is flappy bird
 - menu screen
+- high score tracking
 
 ## Installation
 
