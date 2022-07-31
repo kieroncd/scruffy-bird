@@ -24,15 +24,15 @@ class Background:
 
 class ScrollingBackground:
 
-    def __init__(self, sprite='background', x=0, y=0, num=2):
+    def __init__(self, sprite='background', x=0, y=0):
         self.x, self.y = x, y
         self.bg_one = Background(sprite=sprite, x=x, y=y)
-        self.bg_two = Background(sprite=sprite, x=x+self.bg_one.rect.topright[0], y=y+self.bg_one.rect.topright[1])
+        self.bg_two = Background(sprite=sprite, x=self.bg_one.rect.topright[0], y=self.bg_one.rect.topright[1])
 
     def bg_elements(self):
         return [self.bg_one, self.bg_two]
 
-    def update(self, delta, speed=0.05):
+    def update(self, delta, speed=0.1):
         for e in self.bg_elements():
             e.update(delta, speed)
         self.bg_one.reposition(self.bg_two.rect)
