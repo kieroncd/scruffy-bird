@@ -158,6 +158,10 @@ class GameOverScene(Scene):
     def update(self, delta):
         self.player.update(delta)
         self.mainmenu.update()
+        if self.levelscene.score > self.hs:
+            self.data['high-score'] = self.levelscene.score
+            with open("config.json", "w") as file:
+                json.dump(self.data, file)
 
     def render(self, screen):
         self.levelscene.render(screen)
