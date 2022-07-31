@@ -4,17 +4,18 @@ import numpy as np
 
 class Pipe:
 
-    def __init__(self, x, y):
+    def __init__(self, sprite, x, y):
         self.x = x
         self.y = y
-        self.rect = pygame.Rect((self.x, self.y), (50, 200))
+        self.sprite = pygame.image.load(f'graphics/{sprite}.png').convert_alpha()
+        self.rect = self.sprite.get_rect()
 
     def update(self, delta, speed=0.1):
         self.x -= speed * delta
-        self.rect = pygame.Rect((self.x, self.y), (50, 200))
+        self.rect = self.sprite.get_rect(topleft=(self.x, self.y))
 
     def render(self, screen):
-        pygame.draw.rect(screen, (255, 0, 0), self.rect)
+        screen.blit(self.sprite, self.rect)
 
 
 class PipePair:
@@ -23,8 +24,8 @@ class PipePair:
         self.x = x
         self.award_points = True
         offset = np.random.randint(-100, 100)
-        self.upper = Pipe(self.x, -100 + offset)
-        self.lower = Pipe(self.x, 200 + offset)
+        self.upper = Pipe("pipe_ketchup", self.x, -100 + offset)
+        self.lower = Pipe("pipe_mayo", self.x, 200 + offset)
 
     def update(self, delta, speed=0.1):
         self.check_oob()

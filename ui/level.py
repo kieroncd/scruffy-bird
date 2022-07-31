@@ -1,16 +1,5 @@
 import pygame
-
-
-class UIElement:
-
-    def __init__(self, x, y):
-        self.x, self.y = x, y
-
-    def update(self):
-        pass
-
-    def render(self, screen):
-        pass
+from ui.uielement import UIElement
 
 
 class ScoreCounter(UIElement):
@@ -24,7 +13,7 @@ class ScoreCounter(UIElement):
         self.score += amount
 
     def score_text(self):
-        return self.font.render(f"{self.score}", 0, (255, 255, 255))
+        return self.font.render(f"{self.score}", 0, (0, 0, 0))
 
     def render(self, screen):
         st = self.score_text()

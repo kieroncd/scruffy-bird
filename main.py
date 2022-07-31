@@ -1,9 +1,10 @@
 import pygame
-from scene.titlescene import TitleScene
+from scene import TitleScene
 
 
 def run_game():
     pygame.init()
+    pygame.display.set_caption("Scruffy Bird: Pro")
     screen = pygame.display.set_mode((250, 300))
     clock = pygame.time.Clock()
     scene = TitleScene()
