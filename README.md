@@ -12,6 +12,13 @@ There are probably all sorts of bugs, so please use with caution.
 - menu screen
 - high score tracking
 
+### Planned Features
+
+- multiple playable characters
+- more graphics
+- powerups
+- scruffybirdle
+
 ## Installation
 
 Download the project and run [main.py](main.py), provided pygame and numpy are installed

@@ -24,16 +24,18 @@ class Scene:
 
     def switch_scene(self, next_scene):
         self.next = next_scene
+        gc.collect()
 
     def kill(self):
         self.next = None
 
 
 class TitleScene(Scene):
+
     def __init__(self):
         self.logo = pygame.image.load(r'ui/ui-graphics/logo.png').convert()
         self.background = ScrollingBackground(scroll_speed=0.005)
-        self.start = Button("start", self.switch_to_level, 50, 150, 150, 20)
+        self.start = Button("start", self.switch_scene, 50, 150, 150, 20, func_args=[GetReadyScene()])
         self.next = self
 
     def buttons(self):
@@ -51,9 +53,6 @@ class TitleScene(Scene):
         screen.blit(self.logo, self.logo.get_rect(topleft=(50, 20)))
         for button in self.buttons():
             button.render(screen)
-
-    def switch_to_level(self):
-        self.next = GetReadyScene()
 
 
 class GetReadyScene(Scene):
@@ -134,19 +133,19 @@ class LevelScene(Scene):
 
 class GameOverScene(Scene):
     # TODO: clean this code up
-    def __init__(self, levelscene):
+    def __init__(self, level_scene):
         self.next = self
-        self.levelscene = levelscene
-        self.player = levelscene.player
-        self.background = levelscene.background
+        self.level_scene = level_scene
+        self.player = level_scene.player
+        self.background = level_scene.background
         self.background.scrolling_speed = 0
         with open("config.json", "r") as file:
             self.data = json.load(file)
         self.hs = self.data['high-score']
         self.font = pygame.font.SysFont("Impact", 24)
-        self.gameoverstr = [f"Game Over!", f"Score: {levelscene.score}", f"Previous High Score: {self.hs}"]
+        self.gameoverstr = [f"Game Over!", f"Score: {level_scene.score}", f"Previous High Score: {self.hs}"]
         self.gameovertext = self.gameovertextgen(self.gameoverstr)
-        self.mainmenu = Button("mainmenu", self.return_to_menu, 50, 275, 150, 20)
+        self.mainmenu = Button("mainmenu", self.switch_scene, 50, 275, 150, 20, func_args=[TitleScene()])
 
     def gameovertextgen(self, string):
         text = []
@@ -158,20 +157,16 @@ class GameOverScene(Scene):
     def update(self, delta):
         self.player.update(delta)
         self.mainmenu.update()
-        if self.levelscene.score > self.hs:
-            self.data['high-score'] = self.levelscene.score
+        if self.level_scene.score > self.hs:
+            self.data['high-score'] = self.level_scene.score
             with open("config.json", "w") as file:
                 json.dump(self.data, file)
 
     def render(self, screen):
-        self.levelscene.render(screen)
+        self.level_scene.render(screen)
         self.mainmenu.render(screen)
         for i, j in enumerate(self.gameovertext):
             screen.blit(j, j.get_rect(center=(125, 125+25*i)))
 
     def process_input(self, events):
         self.mainmenu.process_input(events)
-
-    def return_to_menu(self):
-        self.switch_scene(TitleScene())
-        gc.collect()  # deletes old instances to free up memory. simple workaround while I find a better way

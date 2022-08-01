@@ -3,10 +3,11 @@ import pygame
 
 class Button:
 
-    def __init__(self, sprite, func, x, y, sx, sy):
+    def __init__(self, sprite, func, x, y, sx, sy, func_args=[]):
         self.x, self.y = x, y
         self.sx, self.sy = sx, sy  # button dimensions
         self.func = func
+        self.func_args = func_args
         self.rect = pygame.Rect((x, y), (sx, sy))
         self.sprite = pygame.image.load(f'ui/ui-graphics/{sprite}.png').convert()
         self.hover_sprite = pygame.image.load(f'ui/ui-graphics/{sprite}_hover.png').convert()
@@ -24,7 +25,7 @@ class Button:
             self.active_sprite = self.hover_sprite
             for event in events:
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    self.func()
+                    self.func(*self.func_args)
 
     def is_hovering(self):
         x, y = pygame.mouse.get_pos()
