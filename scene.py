@@ -88,7 +88,7 @@ class LevelScene(Scene):
         self.score = 0
 
     def entities(self):
-        return [self.player, self.pipe_one, self.pipe_two]
+        return [self.pipe_one, self.pipe_two, self.player]
 
     def pipes(self):
         return [self.pipe_one, self.pipe_two]
@@ -112,14 +112,16 @@ class LevelScene(Scene):
         self.ui.render(screen)
 
     def check_collisions(self):
-        # if player falls off the bottom, reset
-        if self.player.rect.y > 300:
+        # if player is out of bounds, game over
+        if self.player.rect.y > 300 or self.player.rect.y < -50:
             self.switch_scene(GameOverScene(self))
-        # checks collision of player with pipes
+
         for pipe in self.pipes():
+            # checks collision of player with pipes
             if self.player.rect.colliderect(pipe.upper.rect) or self.player.rect.colliderect(pipe.lower.rect):
                 self.switch_scene(GameOverScene(self))
                 return
+            # score incrementation
             if pipe.x < self.player.x and pipe.award_points:
                 self.ui.score_counter.add_score()
                 pipe.award_points = False
