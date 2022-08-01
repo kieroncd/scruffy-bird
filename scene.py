@@ -113,8 +113,8 @@ class LevelScene(Scene):
         self.ui.render(screen)
 
     def check_collisions(self):
-        # if player falls off the bottom, reset
-        if self.player.rect.y > 300:
+        # if player falls off the bottom or flies too high, reset
+        if self.player.rect.y > 300 or self.player.rect.y < 0:
             self.switch_scene(GameOverScene(self))
         # checks collision of player with pipes
         for pipe in self.pipes():
